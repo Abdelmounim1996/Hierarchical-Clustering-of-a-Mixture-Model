@@ -117,12 +117,12 @@ class Hierarchical_Mixture_Model :
         # cluster covariance matrices
         shape = self.m, self.d, self.d
         #self.cov_G = dict(enumerate( np.full(shape, np.cov(self.X, rowvar = False))))
-        self.cov_G = dict(enumerate( np.full(shape, np.cov(X_train[kmeans.predict(X_train) == 0,:], rowvar = False))))
+        self.cov_G = dict(enumerate( np.full(shape, np.cov(self.X[kmeans.predict(self.X) == 0,:], rowvar = False))))
         
         # cluster priors
         #W= np.random.rand(self.m)
         #self.weights_G = dict(enumerate(W / W.sum() , 0))
-        self.weights_G = dict(enumerate( [1/m]*m ,0))
+        self.weights_G = dict(enumerate( [1/self.m]*self.m ,0))
         
     def _init_PI(self):
         
