@@ -84,7 +84,7 @@ class Hierarchical_Mixture_Model :
         
         """ call large function F to estimate params of dataset """
         if self.mean_F is None :
-            self.large_GMM()
+            self.large_GMM() #We can paralellize this step
             
         """ initialize parameters"""
         self._init_G()                                 # call _init_G function to initialize params of G function
