@@ -209,6 +209,7 @@ class Hierarchical_Mixture_Model :
         self.converged   = False
         self.KL_distance = []
         self.KL_distance.append(KL_distance_old)
+        
         for it in range(self.n_iters): 
             
             # update G
@@ -219,22 +220,26 @@ class Hierarchical_Mixture_Model :
             
             # calculate convergence stability
             KL_distance_new = self.distance()
+            self.KL_distance.append(KL_distance_new)
             
             if abs(KL_distance_new - KL_distance_old) <= self.tol :
                 self.converged = True
+                print("Converged")
                 break
             KL_distance_old = KL_distance_new 
-            self.KL_distance.append(KL_distance_old )
+            
+            if it == self.n_iters:
+                print("max iteration reached")
             
      
     def predict_likelihood(self , X_test):
         
         likelihood = np.zeros( (X_test.shape[0] , len(self.mean_G)) )
-        for it in self.mean_G.keys():
+        for i in self.mean_G.keys():
             distribution = multivariate_normal(
-                self.mean_G[it], 
-                self.cov_G[it])
-            likelihood[:,it] = distribution.pdf(X_test)
+                self.mean_G[i], 
+                self.cov_G[i])
+            likelihood[:,i] = distribution.pdf(X_test)
         return likelihood
     
     def predict(self, X_test):
