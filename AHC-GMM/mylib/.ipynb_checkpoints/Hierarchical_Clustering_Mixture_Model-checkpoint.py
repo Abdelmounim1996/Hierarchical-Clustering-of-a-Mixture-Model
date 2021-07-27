@@ -88,7 +88,7 @@ class Hierarchical_Mixture_Model :
             
         """ initialize parameters"""
         self._init_G()                                 # call _init_G function to initialize params of G function
-        self._init_PI()                                # call _init_PI function to initialize params of PI
+        #self._init_PI()                                # call _init_PI function to initialize params of PI
 
         ''' update params of G '''
         self.update_param()
@@ -124,15 +124,15 @@ class Hierarchical_Mixture_Model :
         #self.weights_G = dict(enumerate(W / W.sum() , 0))
         self.weights_G = dict(enumerate( [1/self.m]*self.m ,0))
         
-    def _init_PI(self):
+#     def _init_PI(self):
         
-        """ randomly initialize the starting PI """ 
+#         """ randomly initialize the starting PI """ 
         
-        lst = list(range(self.m))
-        for i in range(self.k-self.m):
-            lst.append(random.choice(lst))
-            random.shuffle(lst)
-        self.P = lst
+#         lst = list(range(self.m))
+#         for i in range(self.k-self.m):
+#             lst.append(random.choice(lst))
+#             random.shuffle(lst)
+#         self.P = lst
         
     def kl_mvn(self, m0, S0, m1, S1):
         
@@ -204,17 +204,22 @@ class Hierarchical_Mixture_Model :
     def update_param(self ):
         
         it               = 0
+        self.update_PI() 
         KL_distance_old  = self.distance()
         self.converged   = False
         self.KL_distance = []
         self.KL_distance.append(KL_distance_old)
         for it in range(self.n_iters): 
-            # update PI
-            self.update_PI() 
+            
             # update G
             self.update_G()
+            
+            # update PI
+            self.update_PI() 
+            
             # calculate convergence stability
             KL_distance_new = self.distance()
+            
             if abs(KL_distance_new - KL_distance_old) <= self.tol :
                 self.converged = True
                 break
