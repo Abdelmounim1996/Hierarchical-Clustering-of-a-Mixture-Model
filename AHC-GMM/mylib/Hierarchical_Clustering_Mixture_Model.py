@@ -59,7 +59,7 @@ class Hierarchical_Mixture_Model :
         self.cov_F  = cov_F
         self.weight_F = weight_F
         if n_iters < 1: raise ValueError('GMM estimation requires at least one run')
-        if tol < 0.: raise ValueError('Invalid value for covariance_type: %s' %tol)
+        if tol < 0.: raise ValueError('Invalid value for tol try with value positive: %s' %tol)
 
     def fit(self , X) :
         self.X           =  X                        
