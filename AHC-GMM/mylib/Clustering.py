@@ -55,6 +55,7 @@ class Hierarchical_Mixture_Model :
         self.Covars    = Covars_init
         self.Weights   = Weights_init
         self.n_samples , self.n_features = self.X.shape
+        self.reg=1e-06
 
         self.Means_reduce = np.empty((self.reduce_composents ,self.n_features ))
         self.Covars_reduce = np.empty((self.reduce_composents ,self.n_features ,
@@ -118,7 +119,7 @@ class Hierarchical_Mixture_Model :
         """
         m0, S0 = gaussinne_1 ;  m1, S1 = gaussinne_2
         N = m0.shape[0] ; iS1 = np.linalg.pinv(S1) ; diff = m1 - m0
-        tr_term   = np.trace(np.dot(iS1 , S0)) ; det_term  = np.log(np.linalg.det(S1)/np.linalg.det(S0))
+        tr_term   = np.trace(np.dot(iS1 , S0)) ; det_term  = np.log((self.reg +np.abs(np.linalg.det(S1))/(self.reg + np.linalg.det(S0)) ))
         quad_term =  multi_dot([diff.T , np.linalg.pinv(S1), diff])
         return .5 * (tr_term + det_term + quad_term - N)
 
@@ -139,7 +140,7 @@ class Hierarchical_Mixture_Model :
         PI_inv = self.PI_inv
         for i , index in PI_inv.items():
             
-            self.Weights_reduce[i]=np.sum(self.Weights[index ], axis=0)
+            self.Weights_reduce[i] = np.sum(self.Weights[index ], axis=0)
 
             self.Means_reduce[i]=1/(self.Weights_reduce[i])*np.sum(self.Means[ index ]
                                                                    *self.Weights[index ][:, np.newaxis],axis=0) 
