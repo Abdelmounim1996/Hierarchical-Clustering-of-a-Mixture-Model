@@ -119,7 +119,7 @@ class Hierarchical_Mixture_Model :
         """
         m0, S0 = gaussinne_1 ;  m1, S1 = gaussinne_2
         N = m0.shape[0] ; iS1 = np.linalg.pinv(S1) ; diff = m1 - m0
-        tr_term   = np.trace(np.dot(iS1 , S0)) ; det_term  = np.log(self.reg + np.abs(np.linalg.det(S1))/(self.reg + np.linalg.det(S0)) ))
+        tr_term   = np.trace(np.dot(iS1 , S0)) ; det_term  = np.log(self.reg + np.abs(np.linalg.det(S1)/(self.reg + np.linalg.det(S0)) ))
         quad_term =  multi_dot([diff.T , np.linalg.pinv(S1), diff])
         return .5 * (tr_term + det_term + quad_term - N)
 
