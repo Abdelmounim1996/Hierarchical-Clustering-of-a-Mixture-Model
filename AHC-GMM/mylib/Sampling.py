@@ -26,9 +26,8 @@ from bokeh.models import ColumnDataSource, LayoutDOM
 from bokeh.util.compiler import TypeScript
 # Errors and Exceptions library 
 import warnings
-# jupyter plotting sombre 
-from jupyterthemes import jtplot
-jtplot.style()
+
+
 # util functions for plotting 
 def gmm_ellipse_2d( Means, Covars, sdwidth=1, points=100):
     """ vectors corresponding to ellipsoid at standard deviation sdwidth """
